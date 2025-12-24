@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <title>IRUMVA SCHOOL SYSTEM - ULTIMATE</title>
+    <style>
+        :root {
+            --black: #000000; --dark: #111111; --red: #ff0000; --green: #00ff00; --white: #ffffff;
+        }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--black); color: var(--white); }
+        header { border-bottom: 4px solid var(--red); padding: 20px; text-align: center; }
+        header h1 { color: var(--red); margin: 0; letter-spacing: 2px; }
+        .container { padding: 20px; max-width: 950px; margin: auto; }
+        .card { background: var(--dark); border: 1px solid var(--green); padding: 25px; border-radius: 12px; margin-bottom: 20px; }
+        input, textarea, select {
+            width: 100%; padding: 12px; margin: 10px 0; background: #222; 
+            border: 1px solid var(--red); color: white; border-radius: 5px; box-sizing: border-box;
+        }
+        button {
+            background: var(--red); color: white; border: none; padding: 12px; 
+            font-weight: bold; cursor: pointer; width: 100%; border-radius: 5px; text-transform: uppercase;
+        }
+        button:hover { background: var(--green); color: black; }
+        .hidden { display: none; }
+        .nav-btn { width: auto; margin: 5px; }
+        .announcement-bar { background: #200; border: 1px solid var(--red); padding: 10px; color: var(--green); margin-bottom: 20px; }
+        .id-card { border: 3px solid var(--red); width: 300px; padding: 20px; border-radius: 15px; margin: 10px auto; text-align: center; }
+    </style>
+</head>
+<body>
+
+<header><h1>IRUMVA SCHOOL SYSTEM</h1></header>
+
+<div class="container">
+    <div id="nav" class="no-print" style="text-align:center; margin-bottom:20px;">
+        <button class="nav-btn" onclick="showPage('dos-auth')">DOS Portal</button>
+        <button class="nav-btn" onclick="showPage('teacher-auth')">Teacher Portal</button>
+        <button class="nav-btn" onclick="showPage('student-auth')">Student Portal</button>
+    </div>
+
+    <div id="dos-auth" class="page card">
+        <h2 style="color: var(--red);">DOS AUTHENTICATION</h2>
+        <div id="dos-signin">
+            <h3>Sign Up (New DOS)</h3>
+            <input type="password" id="dos-master" placeholder="Enter Master Code (222666)">
+            <input type="text" id="new-dos-user" placeholder="Create Username">
+            <input type="password" id="new-dos-pass" placeholder="Create Password">
+            <button onclick="dosSignUp()">Sign In New DOS</button>
+        </div>
+        <hr style="margin:20px 0; border:0.5px solid #333;">
+        <div id="dos-login">
+            <h3>Login (Existing DOS)</h3>
+            <input type="text" id="dos-user" placeholder="Username">
+            <input type="password" id="dos-pass" placeholder="Password">
+            <button onclick="dosLogin()">Login</button>
+        </div>
+    </div>
+
+    <div id="dos-dashboard" class="page hidden card">
+        <h2 style="color: var(--green);">DOS CONTROL PANEL</h2>
+        
+        <div class="card" style="border-color: var(--red);">
+            <h3>School Announcement (Description)</h3>
+            <textarea id="sch-desc" placeholder="Andika amatangazo hano..."></textarea>
+            <input type="text" id="dos-contact" placeholder="DOS Contact (Phone/Email)">
+            <button onclick="updateSchoolInfo()">Publish Announcement & Contact</button>
+        </div>
+
+        <div class="card">
+            <h3>Add Teacher</h3>
+            <input type="text" id="t-name" placeholder="Teacher Name">
+            <input type="password" id="t-pass" placeholder="Create Teacher Password (Default 2222)">
+            <button onclick="addTeacher()">Save Teacher</button>
+        </div>
+
+        <div class="card">
+            <h3>Add Student</h3>
+            <input type="text" id="s-name" placeholder="Student Name">
+            <input type="password" id="s-pass" placeholder="Student Password">
+            <input type="text" id="s-prince" placeholder="Prince's Code">
+            <button onclick="addStudent()">Confirm Student</button>
+        </div>
+    </div>
+
+    <div id="teacher-auth" class="page hidden card">
+        <h2>TEACHER LOGIN</h2>
+        <input type="text" id="teacher-user-input" placeholder="Teacher Name">
+        <input type="password" id="teacher-pass-input" placeholder="Login Code (2222)">
+        <button onclick="teacherLogin()">Enter System</button>
+    </div>
+
+    <div id="teacher-dashboard" class="page hidden card">
+        <h2 style="color: var(--green);">GRADING PANEL</h2>
+        <select id="st-select"></select>
+        <input type="number" id="m-math" placeholder="Math /100">
+        <input type="number" id="m-disc" placeholder="Discipline /40">
+        <button onclick="saveMarks()">Submit Grades</button>
+    </div>
+
+    <div id="student-auth" class="page hidden card">
+        <h2>STUDENT LOGIN</h2>
+        <input type="text" id="stu-user-input" placeholder="Full Name">
+        <input type="password" id="stu-pass-input" placeholder="Password">
+        <button onclick="studentLogin()">View My Portal</button>
+    </div>
+
+    <div id="student-portal" class="page hidden">
+        <div id="announcement-area"></div>
+        <div class="id-card">
+            <div style="border-bottom:1px solid var(--green);">IRUMVA SCHOOL</div>
+            <div style="font-size:3rem;">?????</div>
+            <h2 id="v-name">---</h2>
+            <p>Prince Code: <span id="v-prince" style="color:var(--green);">#---</span></p>
+        </div>
+        <div class="card">
+            <h3>RESULTS & DISCIPLINE</h3>
+            <p>Mathematics: <span id="v-math">0</span>/100</p>
+            <p>Discipline: <span id="v-disc" style="color:var(--green);">0</span>/40</p>
+            <p><strong>Contact DOS:</strong> <span id="v-contact">---</span></p>
+        </div>
+        <button onclick="window.print()">Download Report</button>
+        <button onclick="location.reload()" style="background:#333; margin-top:10px;">Logout</button>
+    </div>
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('irumva_v6')) || {
+        dos_list: [], teachers: [], students: [], announcement: "", contact: ""
+    };
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    function save() { localStorage.setItem('irumva_v6', JSON.stringify(db)); }
+
+    // DOS AUTH
+    function dosSignUp() {
+        const master = document.getElementById('dos-master').value;
+        if(master !== "222666") return alert("Master Code Incorrect!");
+        db.dos_list.push({ user: document.getElementById('new-dos-user').value, pass: document.getElementById('new-dos-pass').value });
+        save(); alert("New DOS Signed In!");
+    }
+
+    function dosLogin() {
+        const user = document.getElementById('dos-user').value;
+        const pass = document.getElementById('dos-pass').value;
+        const found = db.dos_list.find(d => d.user === user && d.pass === pass);
+        if(found) showPage('dos-dashboard'); else alert("Invalid DOS Credentials");
+    }
+
+    // DOS ACTIONS
+    function updateSchoolInfo() {
+        db.announcement = document.getElementById('sch-desc').value;
+        db.contact = document.getElementById('dos-contact').value;
+        save(); alert("Announcement Updated!");
+    }
+
+    function addTeacher() {
+        const name = document.getElementById('t-name').value;
+        const pass = document.getElementById('t-pass').value || "2222";
+        db.teachers.push({ name, pass });
+        save(); alert("Teacher " + name + " added!");
+    }
+
+    function addStudent() {
+        const name = document.getElementById('s-name').value;
+        const pass = document.getElementById('s-pass').value;
+        const prince = document.getElementById('s-prince').value;
+        db.students.push({ name, pass, prince, math: 0, disc: 0 });
+        save(); alert("Student added!");
+    }
+
+    // TEACHER LOGIC
+    function teacherLogin() {
+        const user = document.getElementById('teacher-user-input').value;
+        const pass = document.getElementById('teacher-pass-input').value;
+        const found = db.teachers.find(t => t.name === user && t.pass === pass);
+        if(found || pass === "2222") {
+            showPage('teacher-dashboard');
+            document.getElementById('st-select').innerHTML = db.students.map((s,i) => `<option value="${i}">${s.name}</option>`).join('');
+        } else alert("Teacher Login Failed");
+    }
+
+    function saveMarks() {
+        const i = document.getElementById('st-select').value;
+        db.students[i].math = document.getElementById('m-math').value;
+        db.students[i].disc = document.getElementById('m-disc').value;
+        save(); alert("Grades saved!");
+    }
+
+    // STUDENT LOGIC
+    function studentLogin() {
+        const user = document.getElementById('stu-user-input').value;
+        const pass = document.getElementById('stu-pass-input').value;
+        const s = db.students.find(s => s.name === user && s.pass === pass);
+        if(s) {
+            showPage('student-portal');
+            document.getElementById('announcement-area').innerHTML = db.announcement ? `<div class="announcement-bar"><strong>ITANGAZO:</strong> ${db.announcement}</div>` : "";
+            document.getElementById('v-name').innerText = s.name;
+            document.getElementById('v-prince').innerText = s.prince;
+            document.getElementById('v-math').innerText = s.math;
+            document.getElementById('v-disc').innerText = s.disc;
+            document.getElementById('v-contact').innerText = db.contact || "None";
+        } else alert("Student not found!");
+    }
+</script>
+</body>
+</html>
